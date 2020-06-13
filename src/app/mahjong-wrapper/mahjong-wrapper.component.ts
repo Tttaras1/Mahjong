@@ -2,6 +2,7 @@ import { Component, OnInit, ɵConsole } from '@angular/core';
 import { CardState } from '../models/model';
 import { timer, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { MahjongWrapperService } from './mahjong-wrapper.service';
 
 @Component({
   selector: 'app-mahjong-wrapper',
@@ -14,14 +15,16 @@ export class MahjongWrapperComponent implements OnInit {
   private cardHideSubscription: Subscription;
   private selectedCard: CardState;
 
+  constructor(public mahjongWrapperService: MahjongWrapperService) {}
+
   public ngOnInit() {
-    this.generateAndShuffleNumbers();
+    this.cardNumbers = this.mahjongWrapperService.generateAndShuffleNumbers();
 
     timer(3000)
       .pipe(
         take(1)
       )
-      .subscribe(() => this.hideAllCards())
+      .subscribe(() => this.mahjongWrapperService.hideAllCards(this.cardNumbers))
   }
 
   public onCardClicked(card: CardState) {
@@ -39,8 +42,6 @@ export class MahjongWrapperComponent implements OnInit {
       return;
     }
 
-    this.selectedCard.isChoosen = true;
-
     if (this.selectedCard && this.selectedCard.number === card.number) {
       card.isActive = true;
       this.selectedCard.isActive = true;
@@ -56,41 +57,5 @@ export class MahjongWrapperComponent implements OnInit {
           this.selectedCard = null;
         })
     }
-  }
-
-  private generateAndShuffleNumbers() {
-    for (let i = 2; i < 50; i++) {
-      if (this.isPrime(i)) {
-        this.cardNumbers.push({
-          number: i,
-          isActive: true,
-          isChoosen: false,
-        })
-      }
-    }
-
-    this.cardNumbers = [...this.cardNumbers, ...(JSON.parse(JSON.stringify(this.cardNumbers)))]
-      .sort(() => this.getRandomArbitrary(-1, 1));
-  }
-
-  private isPrime(n: number) {
-    for (let i = 2; i < n; i++) {
-      if (!(n % i)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private getRandomArbitrary(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-  }
-
-  private hideAllCards() {
-    this.cardNumbers.forEach((i: CardState) => {
-      i.isActive = false;
-      i.isChoosen = false;
-    })
   }
 }
