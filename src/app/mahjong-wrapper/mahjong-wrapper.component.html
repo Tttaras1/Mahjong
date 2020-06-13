@@ -1,0 +1,15 @@
+<div class="container">
+    <h1 class="header">Mahjon-like game</h1>
+
+    <ul class="card-wrapper">
+        <li class="card-wrapper__item" *ngFor="let card of cardNumbers">
+            <app-mahjong-card
+                [num]="card.number"
+                [isActive]="card.isActive"
+                [isChoosen]="card.isChoosen"
+    
+                (click)="onCardClicked(card)"
+            ></app-mahjong-card>
+        </li>
+    </ul>
+</div>

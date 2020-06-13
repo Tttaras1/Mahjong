@@ -1,0 +1,5 @@
+<div class="card-container" [@test]="isActive ? 'active' : isChoosen ? 'chosen' : 'default'">
+    <ng-container *ngIf="isActive || isChoosen">
+        {{num}}
+    </ng-container>
+</div>

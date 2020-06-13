@@ -1,0 +1,21 @@
+.container {
+    text-align: center;
+}
+
+.header {
+    margin-bottom: 50px;
+}
+
+.card-wrapper {
+    display: inline-grid;
+    list-style: none;
+    grid-template-columns: repeat(10, 1fr);
+    box-sizing: border-box;
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+
+    &__item {
+        height: 80px;
+        width: 60px;
+    }
+}
